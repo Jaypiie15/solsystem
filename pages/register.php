@@ -12,7 +12,7 @@ include'includes/session.php';
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>SOL System</title>
-
+    <link href="images/alc logo.jpg" rel="icon" type="text/css">
     <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
@@ -43,11 +43,11 @@ include'includes/session.php';
             <br />
 
             <!-- sidebar menu -->
-           <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+            <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
               <div class="menu_section">
                 <ul class="nav side-menu">
                   <li><a href="dashboard"><i class="fa fa-home"></i> Home</a></li>
-                  <li><a><i class="fa fa-user"></i>Students<span class="fa fa-chevron-down"></span></a>
+                  <li><a><i class="fa fa-users"></i>Students<span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="post">Post Encounter</a></li>
                       <li><a href="sol1">School of Leaders 1</a></li>
@@ -57,10 +57,22 @@ include'includes/session.php';
                       <li><a href="sol3g">School of Leaders 3 Graduate</a></li>
                     </ul>
                   </li>
-                  <li><a href="solteam"><i class="fa fa-users"></i>School of Leaders Management Team</a></li>
-                  <li><a href="register"><i class="fa fa-user-plus"></i>Add Students</a></li>
+                  <li><a href="register"><i class="fa fa-user-plus"></i>Enroll Students</a></li>
+                  <?php
+                  if($role == 0){
+                    echo'
+                  
                   <li><a href="addadmin"><i class="fa fa-user-plus"></i>Add Admins</a></li>
-
+                  <li><a href="edit-net"><i class="fa fa-pencil"></i>Edit Network Leaders</a></li>
+                  <li><a href="edit-title"><i class="fa fa-pencil"></i>Edit Title</a></li>
+                  <li><a href="export"><i class="fa fa-recycle"></i>Recycle Bin</a></li>
+                  <li><a href="export"><i class="fa fa-file"></i>Export Database</a></li>';
+                }
+                else{
+                  echo'';
+                  }
+                  ?>
+                
 
                   
               </div>
@@ -89,6 +101,7 @@ include'includes/session.php';
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
+                  <li><a href="myaccount"><i class="fa fa-user pull-right"></i> My Account</a></li>
                     <li><a href="logout"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
                   </ul>
                 </li>

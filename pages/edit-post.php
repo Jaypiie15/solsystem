@@ -19,7 +19,7 @@ if(empty($id)){
 }else{
 	$query = $db->query("SELECT * FROM students WHERE id = $id");
 	$row = $query->fetch_object();
-
+  $img = $row->image;
 	$last = $row->lastname;
 	$first = $row->firstname;
 	$middle = $row->middlename;
@@ -87,6 +87,7 @@ if(empty($id)){
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>SOL System</title>
+            <link href="images/alc logo.jpg" rel="icon" type="text/css">
 
     <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
@@ -107,7 +108,7 @@ if(empty($id)){
         <div class="col-md-3 left_col menu_fixed">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="index.html" class="site_title"><i class="fa fa-university"></i><span>School of Leaders</span></a>
+              <a href="index.html" class="site_title"><i class="fa fa-university"></i><span><?php echo $title?></span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -118,11 +119,11 @@ if(empty($id)){
             <br />
 
             <!-- sidebar menu -->
-           <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+            <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
               <div class="menu_section">
                 <ul class="nav side-menu">
                   <li><a href="dashboard"><i class="fa fa-home"></i> Home</a></li>
-                  <li><a><i class="fa fa-user"></i>Students<span class="fa fa-chevron-down"></span></a>
+                  <li><a><i class="fa fa-users"></i>Students<span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="post">Post Encounter</a></li>
                       <li><a href="sol1">School of Leaders 1</a></li>
@@ -132,10 +133,22 @@ if(empty($id)){
                       <li><a href="sol3g">School of Leaders 3 Graduate</a></li>
                     </ul>
                   </li>
-                  <li><a href="solteam"><i class="fa fa-users"></i>School of Leaders Management Team</a></li>
-                  <li><a href="register"><i class="fa fa-user-plus"></i>Add Students</a></li>
+                  <li><a href="register"><i class="fa fa-user-plus"></i>Enroll Students</a></li>
+                  <?php
+                  if($role == 0){
+                    echo'
+                  
                   <li><a href="addadmin"><i class="fa fa-user-plus"></i>Add Admins</a></li>
-
+                  <li><a href="edit-net"><i class="fa fa-pencil"></i>Edit Network Leaders</a></li>
+                  <li><a href="edit-title"><i class="fa fa-pencil"></i>Edit Title</a></li>
+                  <li><a href="recycle"><i class="fa fa-recycle"></i>Recycle Bin</a></li>
+                  <li><a href="export"><i class="fa fa-file"></i>Export Database</a></li>';
+                }
+                else{
+                  echo'';
+                  }
+                  ?>
+                
 
                   
               </div>
@@ -164,6 +177,7 @@ if(empty($id)){
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
+                  <li><a href="myaccount"><i class="fa fa-user pull-right"></i> My Account</a></li>
                     <li><a href="logout"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
                   </ul>
                 </li>
@@ -190,6 +204,14 @@ if(empty($id)){
  <form class="form-horizontal form-label-left" method="POST" data-parsley-validate>
             <?php update_stud();?>
                       <span class="section">Registration Form</span>
+
+                        <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Image <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input id="name" class="form-control col-md-7 col-xs-12 surname" name="image" required="required" type="file" data-parsley-required-message="Please Fill in this Field!" value="images/user.png">
+                        </div>
+                      </div>
 
                       <div class="item form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Lastname <span class="required">*</span>
@@ -272,7 +294,7 @@ if(empty($id)){
 
                             		case 'Sol1';
                             				echo'<option value="'.$traini.'" selected>'.$train.'</option>
-											 <option value="Post">Post Encounter</option>
+											               <option value="Post">Post Encounter</option>
                             				 <option value="Sol2">School of Leaders 2</option>
                             				 <option value="Sol3">School of Leaders 3</option>';
                             		break;
@@ -280,14 +302,14 @@ if(empty($id)){
                             		case 'Sol2';
                             				 echo'<option value="'.$traini.'" selected>'.$train.'</option>
                             				 <option value="Post">Post Encounter</option>
-											 <option value="Sol1">School of Leaders 1</option>
+											               <option value="Sol1">School of Leaders 1</option>
                             				 <option value="Sol3">School of Leaders 3</option>';
                             		break;
 
                             		case 'Sol3';
                             				 echo'<option value="'.$traini.'" selected>'.$train.'</option>
                             				 <option value="Post">Post Encounter</option>
-											 <option value="Sol1">School of Leaders 1</option>
+											               <option value="Sol1">School of Leaders 1</option>
                             				 <option value="Sol2">School of Leaders 2</option>';
                             		break;
 
@@ -378,9 +400,9 @@ if(empty($id)){
                       <div class="form-group">
                         <div class="col-md-6 col-md-offset-3">
 						<input type="hidden" name="id" value="<?php echo $id?>">
-            <button id="send" type="submit" name="back" class="btn btn-primary">Back</button>
-						  <button id="send" type="submit" name="btn-delete" class="btn btn-danger">Delete</button>
-                          <button id="send" type="submit" name="btn-update" class="btn btn-success">Update</button>
+            <button id="send" type="submit" name="back" class="btn btn-primary"><i class="fa fa-reply"></i> Back</button>
+						  <button id="send" type="submit" name="btn-delete" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</button>
+                          <button id="send" type="submit" name="btn-update" class="btn btn-success"><i class="fa fa-check"></i> Update</button>
                         </div>
                       </div>
                     </form>

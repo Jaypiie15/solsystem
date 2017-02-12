@@ -40,6 +40,35 @@ switch ($page) {
     require 'pages/edit-post.php';
   break;
 
+  case 'sol1';
+    require 'pages/sol1.php';
+    break;
+
+  case 'sol2';
+    require 'pages/sol2.php';
+    break;
+
+  case 'sol2g';
+    require 'pages/sol2g.php';
+    break; 
+
+  case 'sol3';
+    require 'pages/sol3.php';
+    break;
+
+  case 'sol3g';
+    require 'pages/sol3g.php';
+    break;
+
+  case 'edit-net';
+    require 'pages/edit-net.php';
+    break;
+
+  case 'edit-netlead';
+    require 'pages/edit-netlead.php';
+    break;
+    
+
   default:
     require 'pages/404.php';
     break;

@@ -119,10 +119,11 @@ function register(){
 		$status = $db->real_escape_string($_POST['status']);
 		$disciples = 'Pending';
 		$remarks = 'Pending';
+		$image = 'images/user.png';
 		$show = 1;
 
-	$query = $db->query("INSERT INTO students (lastname,firstname,middlename,encounter_batch,sol_batch,cell_leader,net_leader,contact,training_level,status,disciples,remarks,show_tbl) 
-		VALUES ('$ln','$fn','$mn','$enc','$sol','$cel','$net','$con','$train','$status','$disciples','$remarks','$show')");
+	$query = $db->query("INSERT INTO students (lastname,firstname,middlename,encounter_batch,sol_batch,cell_leader,net_leader,contact,training_level,status,disciples,remarks,image,show_tbl) 
+		VALUES ('$ln','$fn','$mn','$enc','$sol','$cel','$net','$con','$train','$status','$disciples','$remarks','$image','$show')");
 		?>
 		<script type="text/javascript">swal("SUCCESS!","Registered!","success");</script>
 		<?php
@@ -140,7 +141,387 @@ global $db;
 		
 			
 			if($check < 1){
-				echo'<tr><td>No Results found.</td></tr>';
+				echo'<div class="alert alert-danger" style="font-size:14px;font-weight:bolder;text-align:left"> No results found.</div>';
+						
+
+			}else{
+			
+			while ($row = $query->fetch_object()) {
+				$train = $row->training_level;
+				$rem = $row->remarks;
+				$stat = $row->status;
+				switch($train){
+
+					case 'Post';
+						$tl = '<label style="padding:10px;font-weight:bolder" class="label label-info">Post Encounter</label>';
+					break;
+					case 'Sol1';
+						$tl = '<label style="padding:10px;font-weight:bolder" class="label label-primary">School of Leaders 1</label>';
+					break;
+					case 'Sol2';
+						$tl = '<label style="padding:10px;font-weight:bolder" class="label label-danger">School of Leaders 2</label>';
+					break;
+					case 'Sol3';
+						$tl = '<label style="padding:10px;font-weight:bolder" class="label label-warning">School of Leaders 3</label>';
+					break;
+
+					default:
+					break;
+				}
+				switch($rem){
+			case 'Active';
+				$rema = '<label style="padding:10px;font-weight:bolder" class="label label-success"><i class="fa fa-check"></i> Active</label>';
+			break;
+			case 'Pending';
+				$rema = '<label style="padding:10px;font-weight:bolder" class="label label-warning"><i class="fa fa-refresh"></i> Pending</label>';
+			break;
+			case 'Inactive';
+				$rema = '<label style="padding:10px;font-weight:bolder" class="label label-danger"><i class="fa fa-close"></i> Inactive</label>';
+			break;
+			default:
+			break;
+		}
+		switch($stat){
+			case 'cellmem';
+				$statu = '<label style="padding:10px;font-weight:bolder" class="label label-primary"><i class="fa fa-user"></i> Cell Member</label>';
+			break;
+			case 'celllead';
+				$statu = '<label style="padding:10px;font-weight:bolder" class="label label-success"><i class="fa fa-users"></i> Cell Leader</label>';
+			break;
+			default:
+				$statu = '<label style="padding:10px;font-weight:bolder" class="label label-warning">Pending</label>';
+			break;
+		}
+
+
+
+			echo 
+			'
+			<td><img class="img-responsive" src="'.$row->image.'"></td>
+			<td>'.$row->lastname.'</td>
+			<td>'.$row->firstname.'</td>
+			<td>'.$row->middlename.'</td>
+			<td>'.$row->encounter_batch.'</td>
+			<td>'.$row->cell_leader.'</td>
+			<td>'.$row->net_leader.'</td>
+			<td>'.$row->contact.'</td>
+			<td>'.$tl.'</td>
+			<td>'.$statu.'</td>
+			<td>'.$rema.'</td>
+			<td>
+			<form method="POST">
+			<input type="hidden" name="id" value="'.$row->id.'">
+			
+			<button type="submit" name="btn-edit" class="btn btn-success"> <i class="fa fa-eye"></i> View</button>
+			</form>
+			</td>
+			</tr>';
+			}	
+			if(isset($_POST['btn-edit'])){
+				$mod_id = $db->real_escape_string($_POST['id']);
+				$_SESSION['mod_id'] = $mod_id;
+				echo'<script>window.location="edit-post"</script>';
+			}
+
+		
+	}
+
+}
+function show_sol1(){
+global $db;
+
+		$query = $db->query("SELECT * FROM students WHERE training_level='Sol1' AND show_tbl='1'");
+		$check = $query->num_rows;
+
+		
+			
+			if($check < 1){
+				echo'<div class="alert alert-danger" style="font-size:14px;font-weight:bolder;text-align:left"> No results found.</div>';
+						
+
+			}else{
+			
+			while ($row = $query->fetch_object()) {
+				$train = $row->training_level;
+				$rem = $row->remarks;
+				$stat = $row->status;
+				switch($train){
+
+					case 'Post';
+						$tl = '<label style="padding:10px;font-weight:bolder" class="label label-info">Post Encounter</label>';
+					break;
+					case 'Sol1';
+						$tl = '<label style="padding:10px;font-weight:bolder" class="label label-primary">School of Leaders 1</label>';
+					break;
+					case 'Sol2';
+						$tl = '<label style="padding:10px;font-weight:bolder" class="label label-danger">School of Leaders 2</label>';
+					break;
+					case 'Sol3';
+						$tl = '<label style="padding:10px;font-weight:bolder" class="label label-warning">School of Leaders 3</label>';
+					break;
+
+					default:
+					break;
+				}
+				switch($rem){
+			case 'Active';
+				$rema = '<label style="padding:10px;font-weight:bolder" class="label label-success"><i class="fa fa-check"></i> Active</label>';
+			break;
+			case 'Pending';
+				$rema = '<label style="padding:10px;font-weight:bolder" class="label label-warning"><i class="fa fa-refresh"></i> Pending</label>';
+			break;
+			case 'Inactive';
+				$rema = '<label style="padding:10px;font-weight:bolder" class="label label-danger"><i class="fa fa-close"></i> Inactive</label>';
+			break;
+			default:
+			break;
+		}
+		switch($stat){
+			case 'cellmem';
+				$statu = '<label style="padding:10px;font-weight:bolder" class="label label-primary"><i class="fa fa-user"></i> Cell Member</label>';
+			break;
+			case 'celllead';
+				$statu = '<label style="padding:10px;font-weight:bolder" class="label label-success"><i class="fa fa-users"></i> Cell Leader</label>';
+			break;
+			default:
+				$statu = '<label style="padding:10px;font-weight:bolder" class="label label-warning">Pending</label>';
+			break;
+		}
+
+
+
+			echo 
+			'
+			<td><img class="img-responsive" src="'.$row->image.'"></td>
+			<td>'.$row->lastname.'</td>
+			<td>'.$row->firstname.'</td>
+			<td>'.$row->middlename.'</td>
+			<td>'.$row->encounter_batch.'</td>
+			<td>'.$row->cell_leader.'</td>
+			<td>'.$row->net_leader.'</td>
+			<td>'.$row->contact.'</td>
+			<td>'.$tl.'</td>
+			<td>'.$statu.'</td>
+			<td>'.$rema.'</td>
+			<td>
+			<form method="POST">
+			<input type="hidden" name="id" value="'.$row->id.'">
+			
+			<button type="submit" name="btn-edit" class="btn btn-success"> <i class="fa fa-eye"></i> View</button>
+			</form>
+			</td>
+			</tr>';
+			}	
+			if(isset($_POST['btn-edit'])){
+				$mod_id = $db->real_escape_string($_POST['id']);
+				$_SESSION['mod_id'] = $mod_id;
+				echo'<script>window.location="edit-post"</script>';
+			}
+
+		
+	}
+}
+
+function show_sol2(){
+		global $db;
+
+		$query = $db->query("SELECT * FROM students WHERE training_level='Sol2' AND show_tbl='1'");
+		$check = $query->num_rows;
+
+		
+			
+			if($check < 1){
+				echo'<div class="alert alert-danger" style="font-size:14px;font-weight:bolder;text-align:left"> No results found.</div>';
+						
+
+			}else{
+			
+			while ($row = $query->fetch_object()) {
+				$train = $row->training_level;
+				$rem = $row->remarks;
+				$stat = $row->status;
+				switch($train){
+
+					case 'Post';
+						$tl = '<label style="padding:10px;font-weight:bolder" class="label label-info">Post Encounter</label>';
+					break;
+					case 'Sol1';
+						$tl = '<label style="padding:10px;font-weight:bolder" class="label label-primary">School of Leaders 1</label>';
+					break;
+					case 'Sol2';
+						$tl = '<label style="padding:10px;font-weight:bolder" class="label label-danger">School of Leaders 2</label>';
+					break;
+					case 'Sol3';
+						$tl = '<label style="padding:10px;font-weight:bolder" class="label label-warning">School of Leaders 3</label>';
+					break;
+
+					default:
+					break;
+				}
+				switch($rem){
+			case 'Active';
+				$rema = '<label style="padding:10px;font-weight:bolder" class="label label-success"><i class="fa fa-check"></i> Active</label>';
+			break;
+			case 'Pending';
+				$rema = '<label style="padding:10px;font-weight:bolder" class="label label-warning"><i class="fa fa-refresh"></i> Pending</label>';
+			break;
+			case 'Inactive';
+				$rema = '<label style="padding:10px;font-weight:bolder" class="label label-danger"><i class="fa fa-close"></i> Inactive</label>';
+			break;
+			default:
+			break;
+		}
+		switch($stat){
+			case 'cellmem';
+				$statu = '<label style="padding:10px;font-weight:bolder" class="label label-primary">Cell Member</label>';
+			break;
+			case 'celllead';
+				$statu = '<label style="padding:10px;font-weight:bolder" class="label label-success">Cell Leader</label>';
+			break;
+			default:
+				$statu = '<label style="padding:10px;font-weight:bolder" class="label label-warning">Pending</label>';
+			break;
+		}
+
+
+
+			echo 
+			'
+			<td><img class="img-responsive" src=""></td>
+			<td>'.$row->lastname.'</td>
+			<td>'.$row->firstname.'</td>
+			<td>'.$row->middlename.'</td>
+			<td>'.$row->encounter_batch.'</td>
+			<td>'.$row->cell_leader.'</td>
+			<td>'.$row->net_leader.'</td>
+			<td>'.$row->contact.'</td>
+			<td>'.$tl.'</td>
+			<td>'.$statu.'</td>
+			<td>'.$rema.'</td>
+			<td>
+			<form method="POST">
+			<input type="hidden" name="id" value="'.$row->id.'">
+			
+			<button type="submit" name="btn-edit" class="btn btn-success"> <i class="fa fa-eye"></i> View</button>
+			</form>
+			</td>
+			</tr>';
+			}	
+			if(isset($_POST['btn-edit'])){
+				$mod_id = $db->real_escape_string($_POST['id']);
+				$_SESSION['mod_id'] = $mod_id;
+				echo'<script>window.location="edit-post"</script>';
+			}
+
+		
+	}
+}
+
+function show_sol2g(){
+			global $db;
+
+		$query = $db->query("SELECT * FROM students WHERE training_level='Sol2g' AND show_tbl='1'");
+		$check = $query->num_rows;
+
+		
+			
+			if($check < 1){
+				echo'<div class="alert alert-danger" style="font-size:14px;font-weight:bolder;text-align:left"> No results found.</div>';
+						
+
+			}else{
+			
+			while ($row = $query->fetch_object()) {
+				$train = $row->training_level;
+				$rem = $row->remarks;
+				$stat = $row->status;
+				switch($train){
+
+					case 'Post';
+						$tl = '<label style="padding:10px;font-weight:bolder" class="label label-info">Post Encounter</label>';
+					break;
+					case 'Sol1';
+						$tl = '<label style="padding:10px;font-weight:bolder" class="label label-primary">School of Leaders 1</label>';
+					break;
+					case 'Sol2';
+						$tl = '<label style="padding:10px;font-weight:bolder" class="label label-danger">School of Leaders 2</label>';
+					break;
+					case 'Sol3';
+						$tl = '<label style="padding:10px;font-weight:bolder" class="label label-warning">School of Leaders 3</label>';
+					break;
+
+					default:
+					break;
+				}
+				switch($rem){
+			case 'Active';
+				$rema = '<label style="padding:10px;font-weight:bolder" class="label label-success"><i class="fa fa-check"></i> Active</label>';
+			break;
+			case 'Pending';
+				$rema = '<label style="padding:10px;font-weight:bolder" class="label label-warning"><i class="fa fa-refresh"></i> Pending</label>';
+			break;
+			case 'Inactive';
+				$rema = '<label style="padding:10px;font-weight:bolder" class="label label-danger"><i class="fa fa-close"></i> Inactive</label>';
+			break;
+			default:
+			break;
+		}
+		switch($stat){
+			case 'cellmem';
+				$statu = '<label style="padding:10px;font-weight:bolder" class="label label-primary">Cell Member</label>';
+			break;
+			case 'celllead';
+				$statu = '<label style="padding:10px;font-weight:bolder" class="label label-success">Cell Leader</label>';
+			break;
+			default:
+				$statu = '<label style="padding:10px;font-weight:bolder" class="label label-warning">Pending</label>';
+			break;
+		}
+
+
+
+			echo 
+			'
+			<td><img class="img-responsive" src=""></td>
+			<td>'.$row->lastname.'</td>
+			<td>'.$row->firstname.'</td>
+			<td>'.$row->middlename.'</td>
+			<td>'.$row->encounter_batch.'</td>
+			<td>'.$row->cell_leader.'</td>
+			<td>'.$row->net_leader.'</td>
+			<td>'.$row->contact.'</td>
+			<td>'.$tl.'</td>
+			<td>'.$statu.'</td>
+			<td>'.$rema.'</td>
+			<td>
+			<form method="POST">
+			<input type="hidden" name="id" value="'.$row->id.'">
+			
+			<button type="submit" name="btn-edit" class="btn btn-success"> <i class="fa fa-eye"></i> View</button>
+			</form>
+			</td>
+			</tr>';
+			}	
+			if(isset($_POST['btn-edit'])){
+				$mod_id = $db->real_escape_string($_POST['id']);
+				$_SESSION['mod_id'] = $mod_id;
+				echo'<script>window.location="edit-post"</script>';
+			}
+
+		
+	}
+}
+
+function show_sol3(){
+		global $db;
+
+		$query = $db->query("SELECT * FROM students WHERE training_level='Sol3' AND show_tbl='1'");
+		$check = $query->num_rows;
+
+		
+			
+			if($check < 1){
+				echo'<div class="alert alert-danger" style="font-size:14px;font-weight:bolder;text-align:left"> No results found.</div>';
 						
 
 			}else{
@@ -226,6 +607,132 @@ global $db;
 	}
 
 }
+
+function show_sol3g(){
+			global $db;
+
+		$query = $db->query("SELECT * FROM students WHERE training_level='Sol3g' AND show_tbl='1'");
+		$check = $query->num_rows;
+
+		
+			
+			if($check < 1){
+				echo'<div class="alert alert-danger" style="font-size:14px;font-weight:bolder;text-align:left"> No results found.</div>';
+						
+
+			}else{
+			
+			while ($row = $query->fetch_object()) {
+				$train = $row->training_level;
+				$rem = $row->remarks;
+				$stat = $row->status;
+				switch($train){
+
+					case 'Post';
+						$tl = '<label style="padding:10px;font-weight:bolder" class="label label-info">Post Encounter</label>';
+					break;
+					case 'Sol1';
+						$tl = '<label style="padding:10px;font-weight:bolder" class="label label-primary">School of Leaders 1</label>';
+					break;
+					case 'Sol2';
+						$tl = '<label style="padding:10px;font-weight:bolder" class="label label-danger">School of Leaders 2</label>';
+					break;
+					case 'Sol3';
+						$tl = '<label style="padding:10px;font-weight:bolder" class="label label-warning">School of Leaders 3</label>';
+					break;
+
+					default:
+					break;
+				}
+				switch($rem){
+			case 'Active';
+				$rema = '<label style="padding:10px;font-weight:bolder" class="label label-success"><i class="fa fa-check"></i> Active</label>';
+			break;
+			case 'Pending';
+				$rema = '<label style="padding:10px;font-weight:bolder" class="label label-warning"><i class="fa fa-refresh"></i> Pending</label>';
+			break;
+			case 'Inactive';
+				$rema = '<label style="padding:10px;font-weight:bolder" class="label label-danger"><i class="fa fa-close"></i> Inactive</label>';
+			break;
+			default:
+			break;
+		}
+		switch($stat){
+			case 'cellmem';
+				$statu = '<label style="padding:10px;font-weight:bolder" class="label label-primary">Cell Member</label>';
+			break;
+			case 'celllead';
+				$statu = '<label style="padding:10px;font-weight:bolder" class="label label-success">Cell Leader</label>';
+			break;
+			default:
+				$statu = '<label style="padding:10px;font-weight:bolder" class="label label-warning">Pending</label>';
+			break;
+		}
+
+
+
+			echo 
+			'
+			<td><img class="img-responsive" src=""></td>
+			<td>'.$row->lastname.'</td>
+			<td>'.$row->firstname.'</td>
+			<td>'.$row->middlename.'</td>
+			<td>'.$row->encounter_batch.'</td>
+			<td>'.$row->cell_leader.'</td>
+			<td>'.$row->net_leader.'</td>
+			<td>'.$row->contact.'</td>
+			<td>'.$tl.'</td>
+			<td>'.$statu.'</td>
+			<td>'.$rema.'</td>
+			<td>
+			<form method="POST">
+			<input type="hidden" name="id" value="'.$row->id.'">
+			
+			<button type="submit" name="btn-edit" class="btn btn-success"> <i class="fa fa-eye"></i> View</button>
+			</form>
+			</td>
+			</tr>';
+			}	
+			if(isset($_POST['btn-edit'])){
+				$mod_id = $db->real_escape_string($_POST['id']);
+				$_SESSION['mod_id'] = $mod_id;
+				echo'<script>window.location="edit-post"</script>';
+			}
+
+		
+	}
+}
+function show_netl(){
+	global $db;
+
+	$query = $db->query("SELECT * FROM net_leaders");
+	$check = $query->num_rows;
+
+	if($check < 1){
+		echo'<div class="alert alert-danger" style="font-size:14px;font-weight:bolder;text-align:left"> No results found.</div>';
+	}
+	else{
+		while($row = $query->fetch_object()) {
+			echo'<td>'.$row->name.' </td>
+				 <td>
+				 <form method="POST">
+				 <input type="hidden" name="id" value="'.$row->id.'">
+
+				 <button type="submit" name="btn-view" class="btn btn-success"> <i class="fa fa-eye"></i> View</button>
+				 </form>
+				 </td>
+				 </tr>';
+
+		}	
+		if(isset($_POST['btn-view'])){
+			$view_id = $db->real_escape_string($_POST['id']);
+			$_SESSION['view_id'] = $view_id;
+			echo'<script>window.location="edit-netlead"</script>';
+		}	
+	} 
+}
+
+
 
 function update_stud(){
 	global $db;

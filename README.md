@@ -1,2 +1,0 @@
-# solsystem
-SOL system
