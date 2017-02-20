@@ -131,8 +131,9 @@ include'includes/session.php';
                   <div class="x_content">
                   
                   
-                    <!-- Start --> 
-                    <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                    <!-- Start -->
+                    
+                    <table id="datatable-buttons" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                       <thead>
                         <tr>
                           <th>Image</th>
@@ -164,7 +165,7 @@ include'includes/session.php';
             </div>
           </div>
         </div>
-
+     
 
 
 
@@ -245,7 +246,7 @@ include'includes/session.php';
                   className: "btn-sm"
                 },
                 {
-                  extend: "pdfHtml5",
+                  extend: "pdf",
                   className: "btn-sm"
                 },
                 {
@@ -257,6 +258,8 @@ include'includes/session.php';
             });
           }
         };
+
+
 
         TableManageButtons = function() {
           "use strict";
