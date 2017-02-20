@@ -124,54 +124,34 @@ include'includes/session.php';
         <div class="right_col" role="main">
           <div class="">
             <div class="clearfix"></div>
-            <div class="title_left"><h3><i class="fa fa-users"></i> Edit Network Leaders </h3></div>
+            <div class="title_left"><h3><i class="fa fa-users"></i> Post Encounter Students </h3></div>
             <div class="row">
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_content">
-                  <?php add_net();?>
-                  <form method="POST">
-                   <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg"><i class="fa fa-user-plus"></i> Add Network Leaders</button>
-                    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
-                      <div class="modal-content">
-
-                        <div class="modal-header">
-                          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
-                          </button>
-                          <h4 class="modal-title" id="myModalLabel">Add Network Leader</h4>
-                        </div>
-                        <div class="modal-body">
-                         <div class="item form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Name <span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input id="name" class="form-control col-md-7 col-xs-12 surname" name="name" required="required" type="text" data-parsley-required-message="Please Fill in this Field!">
-                        </div>
-                      </div>
-
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                          <button type="submit" name="save" class="btn btn-primary">Save changes</button>
-                        </div>
-
-                      </div>
-                    </div>
-                  </div>
-                  </form>
                   
                   
                     <!-- Start --> 
                     <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                       <thead>
                         <tr>
-                          <th>Name</th>
+                          <th>Image</th>
+                          <th>Last name</th>
+                          <th>First name</th>
+                          <th>Middle name</th>
+                          <th>Encounter Batch</th>
+                          <th>Cell Leader</th>
+                          <th>Network Leader</th>
+                          <th>Contact No.</th>
+                          <th>Training Level</th>
+                          <th>Status</th>
+                          <th>Remarks</th>
+                          <th>Action</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr>
-                          <?php show_netl();?>
+                          <?php show_recycle();?>
                             </tbody>
                     </table>
 

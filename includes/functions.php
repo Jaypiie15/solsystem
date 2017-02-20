@@ -757,11 +757,12 @@ function update_stud(){
 				    <script type="text/JavaScript">
 			swal({   
 				title: "Success!",
-				text: 'Account has been updated.',  
+				text: 'Data has been updated.',  
 				 timer: 4000, 
 				 type: "success",  
 				 showConfirmButton: false 
 				});
+			setTimeout("location.href = 'post'",2000);
 			</script>
 			<?php
 	}
@@ -772,7 +773,7 @@ function update_stud(){
 	    <script type="text/JavaScript">
 		swal({   
 			title: "Success!",
-			text: 'Account is now deleted.',  
+			text: 'Data is now deleted.',  
 			 timer: 4000, 
 			 type: "success",  
 			 showConfirmButton: false 
@@ -785,6 +786,213 @@ function update_stud(){
 	if(isset($_POST['back'])){
 		echo'<script>location.href = "post"</script>';
 	}
+}
+
+function update_net(){
+	global $db;
+
+	if(isset($_POST['btn-update'])){
+		$id = $db->real_escape_string($_POST['id']);
+		$name = $db->real_escape_string($_POST['last']);
+
+		$query = $db->query("UPDATE net_leaders SET name = '$name' WHERE id = '$id'");
+				?>
+
+				    <script type="text/JavaScript">
+			swal({   
+				title: "Success!",
+				text: 'Data has been updated.',  
+				 timer: 4000, 
+				 type: "success",  
+				 showConfirmButton: false 
+				});
+			setTimeout("location.href = 'edit-net'",2000);
+			</script>
+			<?php
+	}
+	if(isset($_POST['btn-delete'])){
+		$id = $db->real_escape_string($_POST['id']);
+
+		$query = $db->query("DELETE FROM net_leaders WHERE id = '$id'");
+				?>
+	    <script type="text/JavaScript">
+		swal({   
+			title: "Success!",
+			text: 'Data is now deleted.',  
+			 timer: 4000, 
+			 type: "success",  
+			 showConfirmButton: false 
+			});
+		setTimeout("location.href = 'edit-net'",2000);
+		</script>
+			<?php
+
+	}
+
+	if(isset($_POST['back'])){
+	echo'<script>location.href = "edit-net"</script>';
+	}
+
+	
+}
+
+function add_net(){
+	global $db;
+	if(isset($_POST['save'])){
+
+		$name = $db->real_escape_string($_POST['name']);
+
+		$query = $db->query("INSERT INTO net_leaders(name) VALUES ('$name')");
+						?>
+	    <script type="text/JavaScript">
+		swal({   
+			title: "Success!",
+			text: 'Network Leader added.',  
+			 timer: 4000, 
+			 type: "success",  
+			 showConfirmButton: false 
+			});
+		setTimeout("location.href = 'edit-net'",2000);
+		</script>
+			<?php
+	}
+}
+
+function edit_title(){
+
+	global $db;
+
+	if(isset($_POST['btn-update'])){
+
+		$title = $db->real_escape_string($_POST['title']);
+
+		$query = $db->query("UPDATE title SET name = '$title'");
+						?>
+
+				    <script type="text/JavaScript">
+			swal({   
+				title: "Success!",
+				text: 'Data has been updated.',  
+				 timer: 4000, 
+				 type: "success",  
+				 showConfirmButton: false 
+				});
+			setTimeout("location.href = 'edit-title'",2000);
+			</script>
+			<?php
+	}
+}
+
+function show_recycle(){
+	global $db;
+
+		$query = $db->query("SELECT * FROM students WHERE show_tbl='0'");
+		$check = $query->num_rows;
+
+		
+			
+			if($check < 1){
+				echo'<div class="alert alert-danger" style="font-size:14px;font-weight:bolder;text-align:left"> No results found.</div>';
+						
+
+			}else{
+			
+			while ($row = $query->fetch_object()) {
+				$train = $row->training_level;
+				$rem = $row->remarks;
+				$stat = $row->status;
+				switch($train){
+
+					case 'Post';
+						$tl = '<label style="padding:10px;font-weight:bolder" class="label label-info">Post Encounter</label>';
+					break;
+					case 'Sol1';
+						$tl = '<label style="padding:10px;font-weight:bolder" class="label label-primary">School of Leaders 1</label>';
+					break;
+					case 'Sol2';
+						$tl = '<label style="padding:10px;font-weight:bolder" class="label label-danger">School of Leaders 2</label>';
+					break;
+					case 'Sol3';
+						$tl = '<label style="padding:10px;font-weight:bolder" class="label label-warning">School of Leaders 3</label>';
+					break;
+
+					default:
+					break;
+				}
+				switch($rem){
+			case 'Active';
+				$rema = '<label style="padding:10px;font-weight:bolder" class="label label-success"><i class="fa fa-check"></i> Active</label>';
+			break;
+			case 'Pending';
+				$rema = '<label style="padding:10px;font-weight:bolder" class="label label-warning"><i class="fa fa-refresh"></i> Pending</label>';
+			break;
+			case 'Inactive';
+				$rema = '<label style="padding:10px;font-weight:bolder" class="label label-danger"><i class="fa fa-close"></i> Inactive</label>';
+			break;
+			default:
+			break;
+		}
+		switch($stat){
+			case 'cellmem';
+				$statu = '<label style="padding:10px;font-weight:bolder" class="label label-primary"><i class="fa fa-user"></i> Cell Member</label>';
+			break;
+			case 'celllead';
+				$statu = '<label style="padding:10px;font-weight:bolder" class="label label-success"><i class="fa fa-users"></i> Cell Leader</label>';
+			break;
+			default:
+				$statu = '<label style="padding:10px;font-weight:bolder" class="label label-warning">Pending</label>';
+			break;
+		}
+
+
+
+			echo 
+			'
+			<td><img class="img-responsive" src="'.$row->image.'"></td>
+			<td>'.$row->lastname.'</td>
+			<td>'.$row->firstname.'</td>
+			<td>'.$row->middlename.'</td>
+			<td>'.$row->encounter_batch.'</td>
+			<td>'.$row->cell_leader.'</td>
+			<td>'.$row->net_leader.'</td>
+			<td>'.$row->contact.'</td>
+			<td>'.$tl.'</td>
+			<td>'.$statu.'</td>
+			<td>'.$rema.'</td>
+			<td>
+			<form method="POST">
+			<input type="hidden" name="id" value="'.$row->id.'">
+			
+			<button type="submit" name="btn-restore" class="btn btn-success"> <i class="fa fa-recycle"></i> Restore</button>
+			</form>
+			</td>
+			</tr>';
+			}	
+			if(isset($_POST['btn-restore'])){
+				$id = $db->real_escape_string($_POST['id']);
+
+				$query = $db->query("UPDATE students SET show_tbl = '1' WHERE id = '$id'");
+										?>
+
+				    <script type="text/JavaScript">
+			swal({   
+				title: "Success!",
+				text: 'Data has been restored.',  
+				 timer: 4000, 
+				 type: "success",  
+				 showConfirmButton: false 
+				});
+			setTimeout("location.href = 'recycle'",2000);
+			</script>
+			<?php
+
+				
+				
+			}
+
+		
+	}
+
 }
 
 function logout(){

@@ -68,6 +68,17 @@ switch ($page) {
     require 'pages/edit-netlead.php';
     break;
     
+  case 'edit-title';
+    require 'pages/edit-title.php';
+    break;
+
+  case 'export';
+    require 'pages/export.php';
+    break;
+
+  case 'recycle';
+    require 'pages/recycle.php';
+  break;
 
   default:
     require 'pages/404.php';

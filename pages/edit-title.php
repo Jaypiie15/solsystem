@@ -2,25 +2,10 @@
 include'includes/functions.php';
 include'includes/session.php';
 
-$id = $_SESSION['view_id'];
-
-if(empty($id)){
-	?>
-			<script type="text/javascript">
-		swal({   
-			 title: "Error!",  
-			 text: "Record Not found.",
-			 timer: 4000, 
-			 type: 'error',  
-			 showConfirmButton: false 
-			});
-		</script>
-		<?php
-}else{
-	$query = $db->query("SELECT * FROM net_leaders WHERE id = $id");
+	$query = $db->query("SELECT * FROM title");
 	$row = $query->fetch_object();
   $name = $row->name;
-}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -147,17 +132,15 @@ if(empty($id)){
                   <div class="x_content">
 
  <form class="form-horizontal form-label-left" method="POST" data-parsley-validate>
- 			              <span class="section">Edit Network Leader</span>
+ 			              <span class="section">Edit Title</span>
 
-                    <?php update_net()?>
-
-
+                    <?php edit_title()?>
 
  			             <div class="item form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Name <span class="required">*</span>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Title <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input id="name" class="form-control col-md-7 col-xs-12 surname" name="last" required="required" type="text" data-parsley-required-message="Please Fill in this Field!" value="<?php echo $name?>">
+                          <input id="name" class="form-control col-md-7 col-xs-12 surname" name="title" required="required" type="text" data-parsley-required-message="Please Fill in this Field!" value="<?php echo $name?>">
                         </div>
                       </div>
 
@@ -165,9 +148,8 @@ if(empty($id)){
                       <div class="form-group">
                         <div class="col-md-6 col-md-offset-3">
 						<input type="hidden" name="id" value="<?php echo $id?>">
-            <button id="send" type="submit" name="back" class="btn btn-primary"><i class="fa fa-reply"></i> Back</button>
+            
             <button id="send" type="submit" name="btn-update" class="btn btn-success"><i class="fa fa-check"></i> Update</button>
-            <button id="send" type="submit" name="btn-delete" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</button>
                         </div>
                       </div>
                     </form>

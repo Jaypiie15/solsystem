@@ -12,7 +12,7 @@ include'includes/session.php';
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>SOL System</title>
-        <link href="images/alc logo.jpg" rel="icon" type="text/css">
+     <link href="images/alc logo.jpg" rel="icon" type="text/css">
 
     <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
@@ -124,58 +124,86 @@ include'includes/session.php';
         <div class="right_col" role="main">
           <div class="">
             <div class="clearfix"></div>
-            <div class="title_left"><h3><i class="fa fa-users"></i> Edit Network Leaders </h3></div>
+            <div class="title_left"><h3><i class="fa fa-file-o"></i> Export Database </h3></div>
             <div class="row">
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_content">
-                  <?php add_net();?>
-                  <form method="POST">
-                   <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg"><i class="fa fa-user-plus"></i> Add Network Leaders</button>
-                    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
-                      <div class="modal-content">
 
-                        <div class="modal-header">
-                          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
-                          </button>
-                          <h4 class="modal-title" id="myModalLabel">Add Network Leader</h4>
-                        </div>
-                        <div class="modal-body">
-                         <div class="item form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Name <span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input id="name" class="form-control col-md-7 col-xs-12 surname" name="name" required="required" type="text" data-parsley-required-message="Please Fill in this Field!">
-                        </div>
-                      </div>
-
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                          <button type="submit" name="save" class="btn btn-primary">Save changes</button>
-                        </div>
-
-                      </div>
-                    </div>
-                  </div>
-                  </form>
-                  
-                  
-                    <!-- Start --> 
-                    <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
-                      <thead>
-                        <tr>
-                          <th>Name</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <?php show_netl();?>
-                            </tbody>
-                    </table>
-
-
+                         <?php
+    set_time_limit(0);
+    if(!isset($_SESSION['set_time_limit']))
+    $file = backup_tables('localhost','root','','solsystem');
+    ?>
+    <script type="text/javascript">
+    swal({   
+      title: "Database successfully backuped!",  
+      text: "Please check your database folder. \n Database Name: <?php echo$file?>",
+       timer: 8000, 
+       type: "success",  
+       showConfirmButton: false 
+      });
+    setTimeout("location.href = 'dashboard'",3000);
+    </script>
+    <?php 
+    /* backup the db OR just a table */
+    function backup_tables($host,$user,$pass,$name,$tables = '*')
+    {
+        $return = '';
+        $link = mysql_connect($host,$user,$pass);
+        mysql_select_db($name,$link);
+        
+        //get all of the tables
+        if($tables == '*')
+        {
+            $tables = array();
+            $result = mysql_query('SHOW TABLES');
+            while($row = mysql_fetch_row($result))
+            {
+                $tables[] = $row[0];
+            }
+        }
+        else
+        {
+            $tables = is_array($tables) ? $tables : explode(',',$tables);
+        }
+        
+        //cycle through
+        foreach($tables as $table)
+        {
+            $result = mysql_query('SELECT * FROM '.$table);
+            $num_fields = mysql_num_fields($result);
+            
+            $return.= 'DROP TABLE IF EXISTS '.$table.';';
+            $row2 = mysql_fetch_row(mysql_query('SHOW CREATE TABLE '.$table));
+            $return.= "\n\n".$row2[1].";\n\n";
+            
+            for ($i = 0; $i < $num_fields; $i++) 
+            {
+                while($row = mysql_fetch_row($result))
+                {
+                    $return.= 'INSERT INTO '.$table.' VALUES(';
+                    for($j=0; $j<$num_fields; $j++) 
+                    {
+                        $row[$j] = addslashes($row[$j]);
+                        $row[$j] = str_replace("\n", '\n',$row[$j]);
+                        if (isset($row[$j])) { $return.= '"'.$row[$j].'"' ; } else { $return.= '""'; }
+                        if ($j<($num_fields-1)) { $return.= ','; }
+                    }
+                    $return.= ");\n";
+                }
+            }
+            $return.="\n\n\n";
+        }
+        
+        //save file
+        $filename = 'solsystem-'.date('d-M-Y h-i D').'.sql';
+        $handle = fopen('database/'.$filename,'w+');
+        fwrite($handle,$return);
+        fclose($handle);
+        return $filename;
+    }
+    ?>
 
 
                   </div>

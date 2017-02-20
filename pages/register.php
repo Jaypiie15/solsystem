@@ -226,7 +226,7 @@ include'includes/session.php';
                       <div class="ln_solid"></div>
                       <div class="form-group">
                         <div class="col-md-6 col-md-offset-3">
-                          <button id="send" type="submit" name="btn-register" class="btn btn-success">Register</button>
+                          <button id="send" type="submit" name="btn-register" class="btn btn-success"><i class="fa fa-user-plus"></i> Register</button>
                         </div>
                       </div>
                     </form>
