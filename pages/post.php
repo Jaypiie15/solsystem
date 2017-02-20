@@ -136,7 +136,6 @@ include'includes/session.php';
                     <table id="datatable-buttons" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                       <thead>
                         <tr>
-                          <th>Image</th>
                           <th>Last name</th>
                           <th>First name</th>
                           <th>Middle name</th>

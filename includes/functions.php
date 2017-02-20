@@ -197,7 +197,6 @@ global $db;
 
 			echo 
 			'
-			<td><img class="img-responsive" src="'.$row->image.'"></td>
 			<td>'.$row->lastname.'</td>
 			<td>'.$row->firstname.'</td>
 			<td>'.$row->middlename.'</td>
